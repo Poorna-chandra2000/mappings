@@ -5,6 +5,7 @@ import com.codingshuttle.tutorial.dataMapping.DataMappingTutorial.entities.Emplo
 import com.codingshuttle.tutorial.dataMapping.DataMappingTutorial.repositories.DepartmentRepository;
 import com.codingshuttle.tutorial.dataMapping.DataMappingTutorial.repositories.EmployeeRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Optional;
 
@@ -46,9 +47,14 @@ public class DepartmentService {
 
         return departmentEntity.flatMap(department ->
                 employeeEntity.map(employee -> {
-                    department.setManager(employee);
+//                    try {
+                        department.setManager(employee);//this line its throwing error
+                    //}
+//                    catch(HttpServerErrorException.InternalServerError error){
+//                        throw new RuntimeException("Response not handled");
+//                    }
                     return departmentRepository.save(department);
-                })).orElse(null);
+                })).orElseThrow(()->new RuntimeException("Could not be assigned"));
     }
 
     public DepartmentEntity getAssignedDepartmentOfManager(Long employeeId) {
@@ -70,6 +76,7 @@ public class DepartmentService {
                     employeeRepository.save(employee);
 
                     department.getWorkers().add(employee);
+                    //also save it
                     return department;
                 })).orElse(null);
     }

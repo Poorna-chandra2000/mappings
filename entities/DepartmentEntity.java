@@ -25,7 +25,7 @@ public class DepartmentEntity {
     @JoinColumn(name = "department_manager")
     private EmployeeEntity manager;
 
-    @OneToMany(mappedBy = "workerDepartment", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "workerDepartment", fetch = FetchType.EAGER)
     private Set<EmployeeEntity> workers;
 
     @ManyToMany(mappedBy = "freelanceDepartments")

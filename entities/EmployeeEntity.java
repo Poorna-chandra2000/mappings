@@ -25,12 +25,13 @@ public class EmployeeEntity {
     private String name;
 
     @OneToOne(mappedBy = "manager")
-    @JsonIgnore
-    private DepartmentEntity managedDepartment;
+//    @JoinColumn(name="department")
+    @JsonIgnore//to avoid recursive jason output
+    private DepartmentEntity managedDepartment;//if one direction dont add the reference itself
 
     @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "worker_department_id")
-    @JoinTable(name = "worker_department_mapping")
+//    @JoinColumn(name = "worker_department_id")//will be appended to employee table only
+    @JoinTable(name = "worker_department_mapping")//but this will create new table and keep everything seperatly
     @JsonIgnore
     private DepartmentEntity workerDepartment;
 
